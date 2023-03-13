@@ -1,4 +1,6 @@
-package org.prgrms.kdt;
+package org.prgrms.kdt.order;
+
+import org.prgrms.kdt.voucher.Voucher;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,4 +40,7 @@ public class Order {
 		this.orderStatus = orderStatus;
 	}
 
+	public UUID getOrderId() {
+		return orderId;
+	}
 }
