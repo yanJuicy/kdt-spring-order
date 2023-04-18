@@ -8,10 +8,9 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-//@Primary
-@Qualifier("memory")
+@Qualifier("jdbc")
 @Repository
-public class MemoryVoucherRepository implements VoucherRepository {
+public class JdbcVoucherRepository implements VoucherRepository {
 
     private final Map<UUID, Voucher> storage = new ConcurrentHashMap<>();
 
