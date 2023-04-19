@@ -23,7 +23,14 @@ public class OrderTester {
 
         var voucherRepository =
                 BeanFactoryAnnotationUtils.qualifiedBeanOfType(applicationContext.getBeanFactory(), VoucherRepository.class, "memory");
-        Voucher voucher = voucherRepository.insert(new FixedAmountVoucher(UUID.randomUUID(), 10L));
+		var voucherRepository2 =
+				BeanFactoryAnnotationUtils.qualifiedBeanOfType(applicationContext.getBeanFactory(), VoucherRepository.class, "memory");
+
+		System.out.println(MessageFormat.format("voucherRepository {0}", voucherRepository));
+		System.out.println(MessageFormat.format("voucherRepository2 {0}", voucherRepository2));
+		System.out.println(voucherRepository == voucherRepository2);
+
+		Voucher voucher = voucherRepository.insert(new FixedAmountVoucher(UUID.randomUUID(), 10L));
 
         var orderService = applicationContext.getBean(OrderService.class);
         Order order = orderService.createOrder(customerId, new ArrayList<>() {{
