@@ -12,17 +12,26 @@ import org.springframework.util.Assert;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class OrderTester {
 
-    public static void main(String[] args) {
-        var applicationContext = new AnnotationConfigApplicationContext(AppConfiguration.class);
+	public static void main(String[] args) {
+		var applicationContext = new AnnotationConfigApplicationContext(AppConfiguration.class);
 
-        var customerId = UUID.randomUUID();
+		var environment = applicationContext.getEnvironment();
+		var version = environment.getProperty("kdt.version");
+		var minimumOrderAmount = environment.getProperty("kdt.minimum-order-amount", Integer.class);
+		var supportVendors = environment.getProperty("kdt.support-vendors", List.class);
+		System.out.println("version = " + version);
+		System.out.println("minimumOrderAmount = " + minimumOrderAmount);
+		System.out.println("supportVendors = " + supportVendors);
 
-        var voucherRepository =
-                BeanFactoryAnnotationUtils.qualifiedBeanOfType(applicationContext.getBeanFactory(), VoucherRepository.class, "memory");
+		var customerId = UUID.randomUUID();
+
+		var voucherRepository =
+				BeanFactoryAnnotationUtils.qualifiedBeanOfType(applicationContext.getBeanFactory(), VoucherRepository.class, "memory");
 		var voucherRepository2 =
 				BeanFactoryAnnotationUtils.qualifiedBeanOfType(applicationContext.getBeanFactory(), VoucherRepository.class, "memory");
 
@@ -32,14 +41,14 @@ public class OrderTester {
 
 		Voucher voucher = voucherRepository.insert(new FixedAmountVoucher(UUID.randomUUID(), 10L));
 
-        var orderService = applicationContext.getBean(OrderService.class);
-        Order order = orderService.createOrder(customerId, new ArrayList<>() {{
-            add(new OrderItem(UUID.randomUUID(), 100L, 1));
-        }}, voucher.getVoucherId());
+		var orderService = applicationContext.getBean(OrderService.class);
+		Order order = orderService.createOrder(customerId, new ArrayList<>() {{
+			add(new OrderItem(UUID.randomUUID(), 100L, 1));
+		}}, voucher.getVoucherId());
 
-        Assert.isTrue(order.totalAmount() == 90L, MessageFormat.format("totalAmount {0} is not 100L", order.totalAmount()));
+		Assert.isTrue(order.totalAmount() == 90L, MessageFormat.format("totalAmount {0} is not 100L", order.totalAmount()));
 
 		applicationContext.close();
-    }
+	}
 
 }

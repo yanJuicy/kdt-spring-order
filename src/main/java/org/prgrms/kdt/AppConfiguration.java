@@ -1,23 +1,24 @@
 package org.prgrms.kdt;
 
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @ComponentScan(basePackages = {"org.prgrms.kdt.order", "org.prgrms.kdt.voucher", "org.prgrms.kdt.configuration"})
 //@ComponentScan(basePackageClasses = {Order.class, Voucher.class})
 //@ComponentScan(basePackages = {"org.prgrms.kdt.voucher"},
 //		excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = MemoryVoucherRepository.class)})
+@PropertySource("application.properties")
 public class AppConfiguration {
 
-	@Bean(initMethod = "init")
+/*	@Bean(initMethod = "init")
 	public BeanOne beanOne() {
 		return new BeanOne();
-	}
+	}*/
 }
 
+/*
 class BeanOne implements InitializingBean {
 
 	public void init() {
@@ -29,3 +30,4 @@ class BeanOne implements InitializingBean {
 		System.out.println("[BeanOne] afterPropertiesSet called!");
 	}
 }
+*/
